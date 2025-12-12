@@ -9,26 +9,33 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "students")
+@Table(name = "staff")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Student {
+public class Staff {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String firstname;
     private String lastname;
+    private String subject;
     private String email;
+    private String phonenumber;
 
+    // Many staff -> one designation
+    @ManyToOne
+    @JoinColumn(name = "designation_id")
+    private Designation designation;
+
+    // Many-to-many with Clazz
     @ManyToMany
     @JoinTable(
-            name = "student_clazz",
-            joinColumns = @JoinColumn(name = "student_id"),
+            name = "staff_clazz",
+            joinColumns = @JoinColumn(name = "staff_id"),
             inverseJoinColumns = @JoinColumn(name = "clazz_id")
     )
     private Set<Clazz> classes = new HashSet<>();
 }
-

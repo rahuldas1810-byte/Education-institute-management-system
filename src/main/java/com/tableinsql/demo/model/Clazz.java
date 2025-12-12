@@ -9,26 +9,22 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "students")
+@Table(name = "classes")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Student {
+public class Clazz {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String firstname;
-    private String lastname;
-    private String email;
+    private String name;
+    private int period;
 
-    @ManyToMany
-    @JoinTable(
-            name = "student_clazz",
-            joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "clazz_id")
-    )
-    private Set<Clazz> classes = new HashSet<>();
+    @ManyToMany(mappedBy = "classes")
+    private Set<Student> students = new HashSet<>();
+
+    @ManyToMany(mappedBy = "classes")
+    private Set<Staff> staff = new HashSet<>();
 }
-
